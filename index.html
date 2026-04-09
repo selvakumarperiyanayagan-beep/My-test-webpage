@@ -42,15 +42,23 @@ nav a {
 /* HERO */
 .hero {
     text-align: center;
-    padding: 100px 20px;
-    background: linear-gradient(45deg, #2563eb, #06b6d4);
+    padding: 80px 20px;
+    background: linear-gradient(45deg, #ff512f, #dd2476);
+}
+
+.hero img {
+    width: 120px;
+    border-radius: 50%;
+    margin-top: 15px;
+    border: 3px solid white;
 }
 
 .hero h2 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+    margin-top: 10px;
 }
 
-/* SECTIONS */
+/* SECTION */
 section {
     padding: 40px 20px;
     text-align: center;
@@ -70,7 +78,7 @@ section {
     transform: scale(1.05);
 }
 
-/* SKILLS BAR */
+/* SKILLS */
 .bar {
     background: #334155;
     border-radius: 10px;
@@ -87,10 +95,17 @@ section {
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    margin-top: 15px;
+    margin: 10px;
     background: #38bdf8;
     color: black;
     border-radius: 20px;
+    text-decoration: none;
+}
+
+/* SOCIAL */
+.social a {
+    margin: 0 10px;
+    color: #38bdf8;
     text-decoration: none;
 }
 
@@ -111,78 +126,4 @@ footer {
     <h1>Periya</h1>
     <div>
         <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-    </div>
-</nav>
-
-<!-- HERO -->
-<div class="hero" id="home">
-    <h2 id="typing"></h2>
-    <p>AI & Data Science Student 🚀</p>
-</div>
-
-<!-- ABOUT -->
-<section id="about">
-    <div class="card">
-        <h2>About Me</h2>
-        <p>I am passionate about AI, ML and Web Development.</p>
-    </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-    <div class="card">
-        <h2>Skills</h2>
-
-        <p>Python</p>
-        <div class="bar"><div class="fill" style="width:80%"></div></div>
-
-        <p>Machine Learning</p>
-        <div class="bar"><div class="fill" style="width:70%"></div></div>
-
-        <p>Web Development</p>
-        <div class="bar"><div class="fill" style="width:75%"></div></div>
-
-    </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects">
-    <div class="card">
-        <h2>Projects</h2>
-        <p>AI Chatbot | Portfolio Website | Student System</p>
-    </div>
-</section>
-
-<!-- CONTACT -->
-<section>
-    <div class="card">
-        <h2>Contact</h2>
-        <a href="mailto:selvakumarperiyanayagan@gmail.com" class="btn">Email Me</a>
-    </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-    <p>© 2026 PERIYANAYAGAN S</p>
-</footer>
-
-<script>
-let text = "Hello, I'm PERIYANAYAGAN S 👋";
-let i = 0;
-
-function typing() {
-    if (i < text.length) {
-        document.getElementById("typing").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typing, 80);
-    }
-}
-
-typing();
-</script>
-
-</body>
-</html>
+        <
