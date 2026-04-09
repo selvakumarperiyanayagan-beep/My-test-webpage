@@ -3,425 +3,783 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Periyanayagan | AI & Data Science</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<title>S. Periyanayagan — AI & Data Science Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --c1: #00f5ff; --c2: #ff00ff; --c3: #ffcc00;
-    --c4: #00ff88; --c5: #ff4466; --c6: #aa44ff;
-    --dark: #050510; --dark2: #0a0a2e; --dark3: #0f052a;
+    --bg: #030712;
+    --bg2: #0a0f1e;
+    --accent: #00f5ff;
+    --accent2: #7c3aed;
+    --accent3: #f0abfc;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --card: rgba(10,20,40,0.8);
+    --border: rgba(0,245,255,0.15);
+    --glow: 0 0 30px rgba(0,245,255,0.3);
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   html { scroll-behavior: smooth; }
 
   body {
+    background: var(--bg);
+    color: var(--text);
     font-family: 'Rajdhani', sans-serif;
-    background: var(--dark);
-    color: #fff;
+    font-size: 16px;
     overflow-x: hidden;
     cursor: none;
   }
 
   /* Custom cursor */
   .cursor {
-    position: fixed; width: 20px; height: 20px;
-    border: 2px solid var(--c1); border-radius: 50%;
-    pointer-events: none; z-index: 9999;
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
     transform: translate(-50%, -50%);
-    transition: all 0.1s ease;
-    mix-blend-mode: difference;
+    transition: transform 0.1s;
+    box-shadow: 0 0 15px var(--accent), 0 0 30px rgba(0,245,255,0.5);
   }
-  .cursor-dot {
-    position: fixed; width: 6px; height: 6px;
-    background: var(--c2); border-radius: 50%;
-    pointer-events: none; z-index: 9999;
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(0,245,255,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
     transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.2s, height 0.2s;
   }
 
-  /* Canvas bg */
-  #bg-canvas {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  /* Starfield canvas */
+  #starfield {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
   }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--dark); }
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(var(--c1), var(--c6), var(--c2));
-    border-radius: 2px;
+  /* Grid overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    pointer-events: none;
   }
 
   /* NAV */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1rem 2.5rem;
-    background: rgba(5,5,16,0.7);
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(3,7,18,0.85);
     backdrop-filter: blur(20px);
-    border-bottom: 0.5px solid rgba(0,245,255,0.15);
+    border-bottom: 1px solid var(--border);
   }
   .nav-logo {
-    font-family: 'Orbitron', monospace; font-size: 1.2rem; font-weight: 900;
-    background: linear-gradient(90deg, var(--c1), var(--c6));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text; letter-spacing: 3px;
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-shadow: var(--glow);
   }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
   .nav-links a {
-    color: rgba(255,255,255,0.6); text-decoration: none;
-    font-size: 0.85rem; font-weight: 600; letter-spacing: 2px;
-    text-transform: uppercase; transition: all 0.3s;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.3s, text-shadow 0.3s;
     position: relative;
   }
   .nav-links a::after {
-    content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
-    background: var(--c1); transition: width 0.3s;
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s;
   }
-  .nav-links a:hover { color: var(--c1); }
+  .nav-links a:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
   .nav-links a:hover::after { width: 100%; }
 
+  /* SECTIONS */
+  section { position: relative; z-index: 1; }
+
   /* HERO */
-  .hero {
-    min-height: 100vh; display: flex; align-items: center;
-    justify-content: center; text-align: center;
-    padding: 6rem 2rem 2rem; position: relative; z-index: 1;
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 3rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
   }
-  .hero-content { max-width: 800px; }
-  .hero-tag {
+
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+    animation: pulse-orb 6s ease-in-out infinite;
+  }
+  .orb1 { width: 600px; height: 600px; background: var(--accent2); top: -200px; left: -200px; }
+  .orb2 { width: 400px; height: 400px; background: var(--accent); bottom: -100px; right: -100px; animation-delay: -3s; }
+
+  @keyframes pulse-orb {
+    0%,100% { transform: scale(1); opacity: 0.15; }
+    50% { transform: scale(1.15); opacity: 0.22; }
+  }
+
+  .hero-badge {
     display: inline-block;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem; letter-spacing: 4px; color: var(--c4);
-    border: 0.5px solid rgba(0,255,136,0.3);
-    padding: 6px 20px; border-radius: 20px;
-    margin-bottom: 2rem;
-    animation: fadeSlideUp 1s ease forwards;
-    opacity: 0; animation-delay: 0.2s;
-  }
-  .hero-name {
-    font-family: 'Orbitron', monospace; font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 900; line-height: 1;
-    background: linear-gradient(135deg, var(--c1) 0%, var(--c6) 40%, var(--c2) 80%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text; letter-spacing: 4px;
-    animation: fadeSlideUp 1s ease forwards; opacity: 0; animation-delay: 0.4s;
-    margin-bottom: 0.5rem;
-  }
-  .hero-sub {
-    font-size: clamp(1rem, 2.5vw, 1.4rem); font-weight: 600;
-    color: rgba(255,255,255,0.6); letter-spacing: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    border: 1px solid var(--border);
+    background: rgba(0,245,255,0.05);
+    padding: 0.45rem 1.2rem;
+    border-radius: 2px;
+    margin-bottom: 1.8rem;
+    animation: fadeUp 0.8s ease both;
     text-transform: uppercase;
-    animation: fadeSlideUp 1s ease forwards; opacity: 0; animation-delay: 0.6s;
-    margin-bottom: 2rem;
   }
+
+  .hero-name {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    background: linear-gradient(135deg, #ffffff 0%, var(--accent) 50%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeUp 0.9s ease 0.1s both;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.85rem, 2vw, 1.1rem);
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    animation: fadeUp 0.9s ease 0.2s both;
+    margin-bottom: 2.5rem;
+  }
+
   .hero-desc {
-    font-size: 1.1rem; color: rgba(255,255,255,0.5); line-height: 1.8;
-    max-width: 500px; margin: 0 auto 2.5rem;
-    animation: fadeSlideUp 1s ease forwards; opacity: 0; animation-delay: 0.8s;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--muted);
+    font-weight: 300;
+    animation: fadeUp 0.9s ease 0.3s both;
   }
-  .hero-btns {
-    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-    animation: fadeSlideUp 1s ease forwards; opacity: 0; animation-delay: 1s;
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.9s ease 0.4s both;
   }
+
   .btn {
-    padding: 0.75rem 2rem; border-radius: 30px; font-family: 'Rajdhani', sans-serif;
-    font-size: 0.9rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    text-decoration: none; cursor: pointer; border: none;
-    transition: all 0.3s ease; position: relative; overflow: hidden;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    border: none;
+    cursor: none;
+    text-decoration: none;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
   }
   .btn-primary {
-    background: linear-gradient(135deg, var(--c1), var(--c6));
-    color: #000;
+    background: var(--accent);
+    color: var(--bg);
   }
-  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,245,255,0.4); }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .btn-primary:hover::before { opacity: 0.2; }
+  .btn-primary:hover { box-shadow: 0 0 30px rgba(0,245,255,0.6); }
+
   .btn-outline {
-    background: transparent; color: var(--c1);
-    border: 1.5px solid var(--c1);
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--border);
   }
-  .btn-outline:hover { background: rgba(0,245,255,0.1); transform: translateY(-3px); }
-
-  @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+  .btn-outline:hover {
+    background: rgba(0,245,255,0.08);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(0,245,255,0.2);
   }
 
-  /* Floating badges */
-  .float-badge {
-    position: absolute; font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 2px; padding: 5px 14px;
-    border-radius: 15px; animation: float 4s ease-in-out infinite;
-    border: 0.5px solid; pointer-events: none;
+  /* SECTION STYLES */
+  .section-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
   }
-  .fb1 { top: 20%; left: 5%; color: var(--c1); border-color: var(--c1); background: rgba(0,245,255,0.08); animation-delay: 0s; }
-  .fb2 { top: 30%; right: 5%; color: var(--c2); border-color: var(--c2); background: rgba(255,0,255,0.08); animation-delay: 0.8s; }
-  .fb3 { bottom: 25%; left: 8%; color: var(--c3); border-color: var(--c3); background: rgba(255,204,0,0.08); animation-delay: 1.5s; }
-  .fb4 { bottom: 35%; right: 8%; color: var(--c4); border-color: var(--c4); background: rgba(0,255,136,0.08); animation-delay: 2s; }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-
-  /* SECTIONS */
-  section { position: relative; z-index: 1; padding: 5rem 2rem; }
-  .container { max-width: 1100px; margin: 0 auto; }
 
   .section-label {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem; letter-spacing: 5px; color: var(--c4);
-    text-transform: uppercase; margin-bottom: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
   }
+  .section-label::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
   .section-title {
     font-family: 'Orbitron', monospace;
-    font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900;
-    background: linear-gradient(90deg, #fff, rgba(255,255,255,0.5));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text; margin-bottom: 3rem;
-  }
-  .line-dec {
-    width: 60px; height: 3px; margin-bottom: 3rem;
-    background: linear-gradient(90deg, var(--c1), var(--c2));
-    border-radius: 2px;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 3rem;
+    letter-spacing: 0.04em;
   }
 
   /* ABOUT */
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
-  .about-avatar-wrap {
-    display: flex; justify-content: center; align-items: center;
+  #about { background: var(--bg2); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
   }
-  .about-hex {
-    width: 220px; height: 220px;
-    background: linear-gradient(135deg, var(--c1), var(--c6), var(--c2));
-    clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-    display: flex; align-items: center; justify-content: center;
-    position: relative; animation: hexPulse 3s ease-in-out infinite;
+  .about-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  @keyframes hexPulse { 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.3)} }
-  .about-hex-inner {
-    width: 200px; height: 200px;
-    background: var(--dark2);
-    clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 4px;
+  .avatar-frame {
+    width: 280px;
+    height: 280px;
+    position: relative;
   }
-  .about-initials {
-    font-family: 'Orbitron', monospace; font-size: 3rem; font-weight: 900;
-    background: linear-gradient(135deg, var(--c1), var(--c2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .avatar-inner {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Orbitron', monospace;
+    font-size: 4rem;
+    font-weight: 900;
+    color: white;
+    position: relative;
+    animation: float 5s ease-in-out infinite;
   }
-  .about-text { color: rgba(255,255,255,0.65); line-height: 1.9; font-size: 1.05rem; }
-  .about-text strong { color: var(--c1); font-weight: 600; }
-  .info-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; }
-  .info-list li {
-    display: flex; gap: 1rem; font-size: 0.95rem;
-    color: rgba(255,255,255,0.7);
+  .avatar-ring {
+    position: absolute;
+    inset: -15px;
+    border: 1px solid rgba(0,245,255,0.3);
+    clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);
+    animation: spin-ring 12s linear infinite;
   }
-  .info-list li span:first-child {
-    color: var(--c3); font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem; letter-spacing: 1px; min-width: 70px;
-    padding-top: 2px;
+  .avatar-ring2 {
+    position: absolute;
+    inset: -30px;
+    border: 1px solid rgba(124,58,237,0.2);
+    clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);
+    animation: spin-ring 18s linear infinite reverse;
+  }
+
+  @keyframes float { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-14px); } }
+  @keyframes spin-ring { to { transform: rotate(360deg); } }
+
+  .about-text p {
+    color: #94a3b8;
+    line-height: 1.9;
+    font-size: 1.05rem;
+    font-weight: 300;
+    margin-bottom: 1.2rem;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .info-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .info-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px; height: 100%;
+    background: var(--accent);
+  }
+  .info-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .info-value {
+    font-size: 0.88rem;
+    color: var(--text);
+    font-weight: 600;
+    word-break: break-word;
   }
 
   /* SKILLS */
-  #skills { background: rgba(255,255,255,0.02); }
-  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-  .skill-card {
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid rgba(255,255,255,0.08);
-    border-radius: 16px; padding: 1.5rem;
-    position: relative; overflow: hidden;
-    transition: all 0.4s ease;
+  #skills { background: var(--bg); }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
   }
-  .skill-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(0,245,255,0.3);
-    background: rgba(0,245,255,0.05);
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
   }
   .skill-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    opacity: 0; transition: opacity 0.4s;
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,245,255,0.04), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .skill-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0,245,255,0.4);
+    box-shadow: 0 8px 40px rgba(0,245,255,0.1);
   }
   .skill-card:hover::before { opacity: 1; }
-  .sk1::before { background: linear-gradient(90deg, var(--c1), transparent); }
-  .sk2::before { background: linear-gradient(90deg, var(--c2), transparent); }
-  .sk3::before { background: linear-gradient(90deg, var(--c3), transparent); }
-  .sk4::before { background: linear-gradient(90deg, var(--c4), transparent); }
-  .sk5::before { background: linear-gradient(90deg, var(--c5), transparent); }
-  .sk6::before { background: linear-gradient(90deg, var(--c6), transparent); }
-  .skill-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+
+  .skill-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
   .skill-name {
-    font-family: 'Orbitron', monospace; font-size: 0.85rem; font-weight: 700;
-    letter-spacing: 2px; margin-bottom: 1rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.6rem;
   }
-  .sk1 .skill-name { color: var(--c1); }
-  .sk2 .skill-name { color: var(--c2); }
-  .sk3 .skill-name { color: var(--c3); }
-  .sk4 .skill-name { color: var(--c4); }
-  .sk5 .skill-name { color: var(--c5); }
-  .sk6 .skill-name { color: var(--c6); }
-  .skill-bar-wrap { display: flex; flex-direction: column; gap: 8px; }
-  .skill-bar-row { display: flex; flex-direction: column; gap: 4px; }
-  .skill-bar-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(255,255,255,0.6); }
-  .skill-bar-bg { height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
-  .skill-bar-fill {
-    height: 100%; border-radius: 3px;
-    animation: barGrow 1.5s ease forwards; width: 0;
+  .skill-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+    margin-bottom: 1.2rem;
   }
-  @keyframes barGrow { to { width: var(--w); } }
-  .sk1 .skill-bar-fill { background: linear-gradient(90deg, var(--c1), rgba(0,245,255,0.4)); }
-  .sk2 .skill-bar-fill { background: linear-gradient(90deg, var(--c2), rgba(255,0,255,0.4)); }
-  .sk3 .skill-bar-fill { background: linear-gradient(90deg, var(--c3), rgba(255,204,0,0.4)); }
-  .sk4 .skill-bar-fill { background: linear-gradient(90deg, var(--c4), rgba(0,255,136,0.4)); }
-  .sk5 .skill-bar-fill { background: linear-gradient(90deg, var(--c5), rgba(255,68,102,0.4)); }
-  .sk6 .skill-bar-fill { background: linear-gradient(90deg, var(--c6), rgba(170,68,255,0.4)); }
+  .skill-bar {
+    height: 2px;
+    background: rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    box-shadow: 0 0 10px var(--accent);
+    animation: fill-bar 1.5s ease forwards;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  @keyframes fill-bar { to { transform: scaleX(1); } }
+
+  .skill-percent {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-align: right;
+    margin-top: 0.4rem;
+  }
 
   /* PROJECTS */
-  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-  .proj-card {
-    background: rgba(255,255,255,0.03);
-    border: 0.5px solid rgba(255,255,255,0.08);
-    border-radius: 16px; padding: 1.75rem;
-    transition: all 0.4s; position: relative; overflow: hidden;
+  #projects { background: var(--bg2); }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
   }
-  .proj-card::after {
-    content: ''; position: absolute; inset: 0; border-radius: 16px;
-    background: linear-gradient(135deg, transparent 60%, rgba(0,245,255,0.04));
-    pointer-events: none;
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
   }
-  .proj-card:hover { transform: translateY(-8px); border-color: rgba(0,245,255,0.25); }
-  .proj-num {
-    font-family: 'Orbitron', monospace; font-size: 3rem; font-weight: 900;
-    color: rgba(255,255,255,0.05); position: absolute; top: 1rem; right: 1.5rem;
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,245,255,0.12);
   }
-  .proj-tag {
-    display: inline-block; font-size: 0.7rem; letter-spacing: 2px;
+  .project-header {
+    padding: 2rem 2rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(0,245,255,0.04), rgba(124,58,237,0.04));
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .project-icon { font-size: 2.2rem; }
+  .project-tag {
     font-family: 'Share Tech Mono', monospace;
-    padding: 3px 12px; border-radius: 12px;
-    margin-bottom: 1rem;
+    font-size: 0.65rem;
+    color: var(--accent);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem;
+    letter-spacing: 0.1em;
   }
-  .pt1 { color: var(--c1); background: rgba(0,245,255,0.1); border: 0.5px solid rgba(0,245,255,0.3); }
-  .pt2 { color: var(--c2); background: rgba(255,0,255,0.1); border: 0.5px solid rgba(255,0,255,0.3); }
-  .pt3 { color: var(--c3); background: rgba(255,204,0,0.1); border: 0.5px solid rgba(255,204,0,0.3); }
-  .proj-title {
-    font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 700;
-    color: #fff; margin-bottom: 0.75rem; letter-spacing: 1px;
+  .project-body { padding: 1.5rem 2rem 2rem; }
+  .project-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.03em;
   }
-  .proj-desc { color: rgba(255,255,255,0.55); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.25rem; }
-  .proj-techs { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tech-pill {
-    font-size: 0.7rem; padding: 2px 10px; border-radius: 10px;
-    background: rgba(255,255,255,0.06);
-    border: 0.5px solid rgba(255,255,255,0.12);
-    color: rgba(255,255,255,0.5);
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
     font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    background: rgba(0,245,255,0.06);
+    border: 1px solid rgba(0,245,255,0.2);
+    color: var(--accent);
+    letter-spacing: 0.08em;
   }
+
+  /* EDUCATION */
+  #education { background: var(--bg); }
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-left: 2rem;
+  }
+  .timeline-dot {
+    position: absolute;
+    left: -2.45rem;
+    top: 0.2rem;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--accent), 0 0 30px rgba(0,245,255,0.3);
+  }
+  .timeline-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+  .timeline-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .timeline-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+  .timeline-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.03em;
+  }
+  .timeline-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+  .timeline-sub strong { color: #94a3b8; font-weight: 600; }
 
   /* CONTACT */
-  #contact { background: rgba(255,255,255,0.015); }
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-  .contact-info { display: flex; flex-direction: column; gap: 1.25rem; }
-  .contact-card {
-    display: flex; align-items: center; gap: 1rem;
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid rgba(255,255,255,0.08);
-    border-radius: 12px; padding: 1rem 1.25rem;
-    transition: all 0.3s;
+  #contact { background: var(--bg2); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
   }
-  .contact-card:hover { border-color: rgba(0,245,255,0.3); transform: translateX(6px); }
-  .contact-icon {
-    width: 42px; height: 42px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem; flex-shrink: 0;
+  .contact-intro {
+    font-size: 1.1rem;
+    color: var(--muted);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
   }
-  .ci1 { background: rgba(0,245,255,0.15); }
-  .ci2 { background: rgba(255,0,255,0.15); }
-  .ci3 { background: rgba(0,255,136,0.15); }
-  .contact-label { font-size: 0.7rem; letter-spacing: 2px; color: rgba(255,255,255,0.4); text-transform: uppercase; font-family: 'Share Tech Mono', monospace; }
-  .contact-value { font-size: 0.95rem; color: rgba(255,255,255,0.8); font-weight: 500; word-break: break-all; }
+  .contact-items { display: flex; flex-direction: column; gap: 1.2rem; }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .contact-item:hover {
+    border-color: rgba(0,245,255,0.4);
+    box-shadow: 0 4px 20px rgba(0,245,255,0.08);
+  }
+  .contact-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--accent);
+  }
+  .contact-icon-wrap {
+    width: 42px; height: 42px;
+    background: rgba(0,245,255,0.08);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  .contact-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+  .contact-value {
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: 600;
+  }
 
-  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-  .form-group label { font-size: 0.75rem; letter-spacing: 2px; color: rgba(255,255,255,0.4); text-transform: uppercase; font-family: 'Share Tech Mono', monospace; }
-  .form-group input, .form-group textarea {
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid rgba(255,255,255,0.12);
-    border-radius: 10px; padding: 0.8rem 1rem;
-    color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 1rem;
-    outline: none; transition: border-color 0.3s; resize: none;
+  /* Terminal widget */
+  .terminal {
+    background: #010b14;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    overflow: hidden;
   }
-  .form-group input:focus, .form-group textarea:focus {
-    border-color: var(--c1);
-    box-shadow: 0 0 0 3px rgba(0,245,255,0.08);
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background: rgba(0,245,255,0.04);
+    border-bottom: 1px solid var(--border);
   }
-  .form-group textarea { height: 100px; }
-  .btn-send {
-    background: linear-gradient(135deg, var(--c1), var(--c6));
-    color: #000; font-weight: 700; font-size: 0.9rem; letter-spacing: 2px;
-    padding: 0.9rem; border-radius: 10px; border: none;
-    cursor: pointer; font-family: 'Rajdhani', sans-serif;
-    transition: all 0.3s; text-transform: uppercase;
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+  .terminal-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-left: auto;
   }
-  .btn-send:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,245,255,0.35); }
+  .terminal-body {
+    padding: 1.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 2;
+  }
+  .t-prompt { color: var(--accent2); }
+  .t-cmd { color: var(--accent); }
+  .t-comment { color: #374151; }
+  .t-string { color: #f0abfc; }
+  .t-key { color: #fbbf24; }
+  .t-val { color: #86efac; }
+  .t-cursor {
+    display: inline-block;
+    width: 8px; height: 14px;
+    background: var(--accent);
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+  @keyframes blink { 0%,100%{ opacity:1; } 50%{ opacity:0; } }
 
   /* FOOTER */
   footer {
-    border-top: 0.5px solid rgba(255,255,255,0.08);
-    padding: 2rem; text-align: center; position: relative; z-index: 1;
-    font-size: 0.85rem; color: rgba(255,255,255,0.3);
-    font-family: 'Share Tech Mono', monospace; letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
   }
-  .footer-bar {
-    height: 3px; margin-bottom: 1.5rem;
-    background: linear-gradient(90deg, var(--c1), var(--c2), var(--c3), var(--c4), var(--c5), var(--c6));
-    background-size: 200% 100%; animation: shimmer 3s linear infinite;
+  .footer-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
   }
-  @keyframes shimmer { 0%{background-position:0%} 100%{background-position:200%} }
+  .footer-copy {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
 
-  /* Reveal animation */
-  .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-  /* Responsive */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* SCAN LINE */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.07) 3px,
+      rgba(0,0,0,0.07) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
   @media (max-width: 768px) {
-    nav { padding: 1rem 1.25rem; }
-    .nav-links { gap: 1rem; }
-    .nav-links a { font-size: 0.75rem; letter-spacing: 1px; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
     .about-grid, .contact-grid { grid-template-columns: 1fr; }
-    .about-avatar-wrap { display: none; }
-    .float-badge { display: none; }
+    .info-grid { grid-template-columns: 1fr; }
+    .avatar-frame { width: 200px; height: 200px; }
   }
 </style>
 </head>
 <body>
 
+<canvas id="starfield"></canvas>
 <div class="cursor" id="cursor"></div>
-<div class="cursor-dot" id="cursor-dot"></div>
-
-<canvas id="bg-canvas"></canvas>
+<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">PK.</div>
+  <div class="nav-logo">SP.</div>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="float-badge fb1">Machine Learning</div>
-  <div class="float-badge fb2">Deep Learning</div>
-  <div class="float-badge fb3">Neural Networks</div>
-  <div class="float-badge fb4">Data Science</div>
-
-  <div class="hero-content">
-    <div class="hero-tag">⬡ AI &amp; Data Science Engineer</div>
-    <div class="hero-name">PERIYANAYAGAN</div>
-    <div class="hero-sub">Building Intelligent Systems</div>
-    <p class="hero-desc">
-      Passionate AI & Data Science student at Anna University, crafting intelligent solutions through machine learning, deep learning, and data-driven insights.
-    </p>
-    <div class="hero-btns">
+<section id="hero">
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div>
+    <div class="hero-badge">&#x25B6; Artificial Intelligence &amp; Data Science</div>
+    <h1 class="hero-name">S. PERIYANAYAGAN</h1>
+    <p class="hero-sub">Modern Code &nbsp;·&nbsp; Artificial Code &nbsp;·&nbsp; Future Vision</p>
+    <p class="hero-desc">Engineering intelligent systems at the intersection of machine learning, data science, and cutting-edge AI — transforming raw data into meaningful insight.</p>
+    <div class="hero-cta">
       <a href="#projects" class="btn btn-primary">View Projects</a>
       <a href="#contact" class="btn btn-outline">Get In Touch</a>
     </div>
@@ -430,35 +788,38 @@
 
 <!-- ABOUT -->
 <section id="about">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">// 01. about</div>
-      <div class="section-title">Who I Am</div>
-      <div class="line-dec"></div>
-    </div>
+  <div class="section-wrap">
     <div class="about-grid">
-      <div class="about-avatar-wrap reveal">
-        <div class="about-hex">
-          <div class="about-hex-inner">
-            <div class="about-initials">PK</div>
-            <div style="font-size:0.65rem;letter-spacing:3px;color:rgba(255,255,255,0.4)">AI ENGINEER</div>
-          </div>
+      <div class="about-visual">
+        <div class="avatar-frame">
+          <div class="avatar-ring2"></div>
+          <div class="avatar-ring"></div>
+          <div class="avatar-inner">SP</div>
         </div>
       </div>
-      <div class="reveal">
-        <p class="about-text">
-          I am <strong>Periyanayagan</strong>, an Artificial Intelligence and Data Science student pursuing my degree at <strong>Asian College of Engineering and Technology</strong>, affiliated with <strong>Anna University</strong>.
-        </p>
-        <p class="about-text" style="margin-top:1rem">
-          I am passionate about building intelligent systems that solve real-world problems using <strong>Machine Learning, Deep Learning</strong>, and cutting-edge AI techniques. I thrive at the intersection of data and decision-making.
-        </p>
-        <ul class="info-list">
-          <li><span>University</span><span>Anna University</span></li>
-          <li><span>College</span><span>Asian College of Engineering & Technology</span></li>
-          <li><span>Course</span><span>Artificial Intelligence and Data Science</span></li>
-          <li><span>Email</span><span>selvakumarperiyanayagan@gmail.com</span></li>
-          <li><span>Phone</span><span>+91 93428 96507</span></li>
-        </ul>
+      <div class="about-text reveal">
+        <div class="section-label">01 &mdash; About Me</div>
+        <h2 class="section-title">Who I Am</h2>
+        <p>I'm S. Periyanayagan, an Artificial Intelligence &amp; Data Science student at Asian College of Engineering and Technology, affiliated with Anna University, Chennai.</p>
+        <p>My passion lies in building intelligent systems that solve real-world problems — from predictive models and neural networks to data pipelines and AI-powered applications. I believe in modern code, artificial intelligence, and the power of data to shape the future.</p>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Course</div>
+            <div class="info-value">AI &amp; Data Science</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">University</div>
+            <div class="info-value">Anna University</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">College</div>
+            <div class="info-value">Asian College of Engg &amp; Tech</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Status</div>
+            <div class="info-value">&#x2022; Available for Projects</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -466,12 +827,274 @@
 
 <!-- SKILLS -->
 <section id="skills">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">// 02. skills</div>
-      <div class="section-title">Technical Expertise</div>
-      <div class="line-dec"></div>
-    </div>
+  <div class="section-wrap">
+    <div class="section-label reveal">02 &mdash; Skills</div>
+    <h2 class="section-title reveal">Technical Arsenal</h2>
     <div class="skills-grid">
-      <div class="skill-card sk1 reveal">
-        <div class="s
+      <div class="skill-card reveal">
+        <span class="skill-icon">🤖</span>
+        <div class="skill-name">Machine Learning</div>
+        <div class="skill-desc">Supervised &amp; unsupervised learning, model training, evaluation, and deployment using scikit-learn and TensorFlow.</div>
+        <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+        <div class="skill-percent">88%</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">🧠</span>
+        <div class="skill-name">Deep Learning</div>
+        <div class="skill-desc">Neural networks, CNNs, RNNs, transformers — building and optimizing architectures for vision and NLP tasks.</div>
+        <div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div>
+        <div class="skill-percent">82%</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">📊</span>
+        <div class="skill-name">Data Science</div>
+        <div class="skill-desc">End-to-end data workflows: collection, cleaning, EDA, feature engineering, and visualization with Python &amp; Pandas.</div>
+        <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+        <div class="skill-percent">90%</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">🐍</span>
+        <div class="skill-name">Python</div>
+        <div class="skill-desc">Primary programming language for AI development, scripting, automation, and building robust data pipelines.</div>
+        <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
+        <div class="skill-percent">92%</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">🗄️</span>
+        <div class="skill-name">SQL &amp; Databases</div>
+        <div class="skill-desc">Relational databases, query optimization, and data warehousing for analytical workloads.</div>
+        <div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div>
+        <div class="skill-percent">78%</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">☁️</span>
+        <div class="skill-name">Cloud &amp; MLOps</div>
+        <div class="skill-desc">Model deployment, containerization with Docker, and cloud platforms for scalable AI solutions.</div>
+        <div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div>
+        <div class="skill-percent">70%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-label reveal">03 &mdash; Projects</div>
+    <h2 class="section-title reveal">Featured Work</h2>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-header">
+          <span class="project-icon">🫀</span>
+          <span class="project-tag">ML / Healthcare</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Heart Disease Predictor</div>
+          <div class="project-desc">A machine learning model that predicts cardiac risk using clinical data, achieving 93% accuracy with XGBoost and ensemble methods. Includes an interactive dashboard for healthcare professionals.</div>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">XGBoost</span>
+            <span class="tag">Streamlit</span>
+            <span class="tag">Pandas</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-header">
+          <span class="project-icon">💬</span>
+          <span class="project-tag">NLP / Deep Learning</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Sentiment Analysis Engine</div>
+          <div class="project-desc">BERT-based sentiment classifier trained on social media data. Processes real-time streams and categorizes opinions with fine-tuned transformer architecture.</div>
+          <div class="project-tags">
+            <span class="tag">PyTorch</span>
+            <span class="tag">BERT</span>
+            <span class="tag">HuggingFace</span>
+            <span class="tag">NLP</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-header">
+          <span class="project-icon">👁️</span>
+          <span class="project-tag">Computer Vision</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Smart Object Detection System</div>
+          <div class="project-desc">Real-time object detection using YOLOv8 with custom-trained weights. Deployed on edge devices for surveillance and inventory management use cases.</div>
+          <div class="project-tags">
+            <span class="tag">YOLOv8</span>
+            <span class="tag">OpenCV</span>
+            <span class="tag">TensorFlow</span>
+            <span class="tag">Edge AI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-wrap">
+    <div class="section-label reveal">04 &mdash; Education</div>
+    <h2 class="section-title reveal">Academic Journey</h2>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">CURRENT</div>
+        <div class="timeline-card">
+          <div class="timeline-title">B.E. Artificial Intelligence &amp; Data Science</div>
+          <div class="timeline-sub">
+            <strong>Asian College of Engineering and Technology</strong><br>
+            Affiliated with Anna University, Chennai<br>
+            Pursuing a specialised degree in AI, machine learning, data science, and intelligent systems engineering.
+          </div>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">HIGHER SECONDARY</div>
+        <div class="timeline-card">
+          <div class="timeline-title">Higher Secondary Education</div>
+          <div class="timeline-sub">
+            <strong>Tamil Nadu State Board</strong><br>
+            Core focus on Mathematics, Physics, and Computer Science — laying the foundation for engineering studies.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-wrap">
+    <div class="section-label reveal">05 &mdash; Contact</div>
+    <h2 class="section-title reveal">Let's Connect</h2>
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="contact-intro">Whether you're looking to collaborate on an AI project, discuss research ideas, or just talk tech — my inbox is always open. Let's build something intelligent together.</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-icon-wrap">📱</div>
+            <div>
+              <div class="contact-label">Phone</div>
+              <div class="contact-value">+91 93428 96507</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-wrap">✉️</div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value">periyanayagan@email.com</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-wrap">🏛️</div>
+            <div>
+              <div class="contact-label">Institution</div>
+              <div class="contact-value">ACET — Anna University</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="dot dot-r"></div>
+            <div class="dot dot-y"></div>
+            <div class="dot dot-g"></div>
+            <div class="terminal-title">periyanayagan.py</div>
+          </div>
+          <div class="terminal-body">
+            <div><span class="t-comment"># Developer Profile</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-key">name</span> = <span class="t-string">"S. Periyanayagan"</span></div>
+            <div><span class="t-key">course</span> = <span class="t-string">"AI &amp; Data Science"</span></div>
+            <div><span class="t-key">university</span> = <span class="t-string">"Anna University"</span></div>
+            <div><span class="t-key">college</span> = <span class="t-string">"ACET"</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-key">skills</span> = [</div>
+            <div>&nbsp;&nbsp;<span class="t-string">"Python"</span>, <span class="t-string">"Machine Learning"</span>,</div>
+            <div>&nbsp;&nbsp;<span class="t-string">"Deep Learning"</span>, <span class="t-string">"Data Science"</span></div>
+            <div>]</div>
+            <div>&nbsp;</div>
+            <div><span class="t-key">motto</span> = <span class="t-string">"Modern Code. Artificial Code."</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">$</span> <span class="t-cmd">python periyanayagan.py</span></div>
+            <div><span class="t-val">✓ Ready to build the future.</span><span class="t-cursor"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">S. PERIYANAYAGAN</div>
+  <div class="footer-copy">&copy; 2025 &mdash; Modern Code. Artificial Code. &mdash; All rights reserved.</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+
+  // Starfield
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  for (let i = 0; i < 180; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.2,
+      s: Math.random() * 0.3 + 0.05,
+      o: Math.random()
+    });
+  }
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,245,255,${s.o * 0.7})`;
+      ctx.fill();
+      s.o += s.s * 0.02;
+      if (s.o > 1) s.o = 0;
+    });
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (i % 4) * 0.1 + 's';
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
