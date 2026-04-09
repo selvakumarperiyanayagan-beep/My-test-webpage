@@ -3,40 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Periyanayagan</title>
+<title>Periyanayagan Portfolio</title>
 
 <style>
-body {
+* {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #0f172a, #1e293b);
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f172a;
     color: white;
 }
 
-header {
-    text-align: center;
-    padding: 40px;
-    background: #2563eb;
+/* NAVBAR */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: #020617;
+    position: sticky;
+    top: 0;
 }
 
+nav h1 {
+    color: #38bdf8;
+}
+
+nav a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+/* HERO */
+.hero {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(45deg, #2563eb, #06b6d4);
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* SECTIONS */
 section {
-    padding: 20px;
+    padding: 50px 20px;
 }
 
 .card {
     background: #1e293b;
-    margin: 20px;
+    margin: 20px auto;
     padding: 20px;
     border-radius: 10px;
+    max-width: 700px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    background: #334155;
 }
 
 h2 {
     color: #38bdf8;
+    margin-bottom: 10px;
 }
 
+/* SKILLS BAR */
+.skill {
+    margin: 10px 0;
+}
+
+.bar {
+    background: #334155;
+    height: 10px;
+    border-radius: 5px;
+}
+
+.fill {
+    height: 10px;
+    background: #38bdf8;
+    border-radius: 5px;
+}
+
+/* PROJECT GRID */
+.projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* FORM */
+form input, form textarea {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background: #38bdf8;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* FOOTER */
 footer {
     text-align: center;
-    padding: 10px;
+    padding: 20px;
     background: black;
 }
 </style>
@@ -45,31 +137,10 @@ footer {
 
 <body>
 
-<header>
-    <h1>Hello! I am PERIYANAYAGAN S</h1>
-    <p>AI & DS Student 🚀</p>
-</header>
-
-<section>
-
-<div class="card">
-    <h2>About Me</h2>
-    <p>I am an AI & Data Science student. This is my first website.</p>
-</div>
-
-<div class="card">
-    <h2>My Projects</h2>
-    <ul>
-        <li>Project 1</li>
-        <li>Project 2</li>
-    </ul>
-</div>
-
-</section>
-
-<footer>
-    <p>© 2026 PERIYANAYAGAN S</p>
-</footer>
-
-</body>
-</html>
+<!-- NAVBAR -->
+<nav>
+    <h1>Periya</h1>
+    <div>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
