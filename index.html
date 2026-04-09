@@ -10,22 +10,21 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    scroll-behavior: smooth;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #0f172a;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
     color: white;
+    scroll-behavior: smooth;
 }
 
 /* NAVBAR */
 nav {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: 15px 30px;
-    background: #020617;
+    background: rgba(0,0,0,0.7);
     position: sticky;
     top: 0;
 }
@@ -42,87 +41,57 @@ nav a {
 
 /* HERO */
 .hero {
-    height: 90vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     text-align: center;
+    padding: 100px 20px;
     background: linear-gradient(45deg, #2563eb, #06b6d4);
 }
 
 .hero h2 {
     font-size: 2.5rem;
-    animation: fadeIn 2s ease-in;
-}
-
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
 }
 
 /* SECTIONS */
 section {
-    padding: 50px 20px;
+    padding: 40px 20px;
+    text-align: center;
 }
 
 .card {
-    background: #1e293b;
+    background: rgba(255,255,255,0.05);
     margin: 20px auto;
     padding: 20px;
-    border-radius: 10px;
-    max-width: 700px;
+    border-radius: 15px;
+    max-width: 600px;
+    backdrop-filter: blur(10px);
     transition: 0.3s;
 }
 
 .card:hover {
     transform: scale(1.05);
-    background: #334155;
-}
-
-h2 {
-    color: #38bdf8;
-    margin-bottom: 10px;
 }
 
 /* SKILLS BAR */
-.skill {
-    margin: 10px 0;
-}
-
 .bar {
     background: #334155;
-    height: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
 }
 
 .fill {
     height: 10px;
     background: #38bdf8;
-    border-radius: 5px;
 }
 
-/* PROJECT GRID */
-.projects {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-/* FORM */
-form input, form textarea {
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-}
-
-button {
+/* BUTTON */
+.btn {
+    display: inline-block;
     padding: 10px 20px;
+    margin-top: 15px;
     background: #38bdf8;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    color: black;
+    border-radius: 20px;
+    text-decoration: none;
 }
 
 /* FOOTER */
@@ -144,3 +113,76 @@ footer {
         <a href="#home">Home</a>
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="home">
+    <h2 id="typing"></h2>
+    <p>AI & Data Science Student 🚀</p>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+    <div class="card">
+        <h2>About Me</h2>
+        <p>I am passionate about AI, ML and Web Development.</p>
+    </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+    <div class="card">
+        <h2>Skills</h2>
+
+        <p>Python</p>
+        <div class="bar"><div class="fill" style="width:80%"></div></div>
+
+        <p>Machine Learning</p>
+        <div class="bar"><div class="fill" style="width:70%"></div></div>
+
+        <p>Web Development</p>
+        <div class="bar"><div class="fill" style="width:75%"></div></div>
+
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+    <div class="card">
+        <h2>Projects</h2>
+        <p>AI Chatbot | Portfolio Website | Student System</p>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section>
+    <div class="card">
+        <h2>Contact</h2>
+        <a href="mailto:selvakumarperiyanayagan@gmail.com" class="btn">Email Me</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 PERIYANAYAGAN S</p>
+</footer>
+
+<script>
+let text = "Hello, I'm PERIYANAYAGAN S 👋";
+let i = 0;
+
+function typing() {
+    if (i < text.length) {
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing, 80);
+    }
+}
+
+typing();
+</script>
+
+</body>
+</html>
